@@ -19,9 +19,8 @@
 #endif
 
 #ifdef OPLUS_FEATURE_CAMERA_COMMON
-/*Houbing.Peng@ODM 20200416 add for sala bringup*/
-#include<soc/oppo/oppo_project.h>
-#include<soc/oppo/oppo_project_oldcdt.h>
+#include <soc/oplus/system/oplus_project.h>
+#include <soc/oplus/system/oplus_project_oldcdt.h>
 
 /*Houbing.Peng@ODM Cam.Drv 20200117 avoid wl2864 power up confict*/
 static struct wl2864 wl2864_instance;
@@ -39,7 +38,6 @@ struct WL2864_LDOMAP  ldolist[] = {
 };
 
 #ifdef OPLUS_FEATURE_CAMERA_COMMON
-/*Houbing.Peng@ODM 20200416 add for sala bringup*/
 struct WL2864_LDOMAP  ldolist_20682[] = {
 	{IMGSENSOR_SENSOR_IDX_MAIN, AVDD, CAMERA_LDO_AVDD1},//for rear main(AVDD)
 	{IMGSENSOR_SENSOR_IDX_MAIN, AVDD2, CAMERA_LDO_AVDD2},//for rear main(AVDD2)
@@ -104,9 +102,7 @@ static enum IMGSENSOR_RETURN wl2864_set(
 		   pin_state > IMGSENSOR_HW_PIN_STATE_LEVEL_HIGH)
 			ret = IMGSENSOR_RETURN_ERROR;
 
-	/*Houbing.Peng@ODM 20200416 add for sala bringup*/
-	if (is_project(OPPO_20682)) {
-		/*Hongyu.Zhao@ODM 20200504 add for sala-a compatible with sala*/
+	if (is_project(OPLUS_20682)) {
 		static int operator = OPERATOR_UNKOWN;
 		operator = get_Operator_Version();
 		if (operator == OPERATOR_20682_SALA_A_ASIA_SIMPLE
@@ -114,10 +110,9 @@ static enum IMGSENSOR_RETURN wl2864_set(
 			|| operator == OPERATOR_20682_SALA_A_All_BAND_VIETNAM
 			|| operator == OPERATOR_20682_SALA_A_INTERNATIONAL
 			|| operator == OPERATOR_20682_SALA_LITE_INTERNATIONAL
-			|| operator == OPERATOR_20682_SALA_LITE_VODAFONE) {
+			/*|| operator == OPERATOR_20682_SALA_LITE_VODAFONE*/) {
 			ldolist_20682[6].wl2864ldo = CAMERA_LDO_AVDD1;
 		}
-
 		pr_debug("%s ++++++wl2864 sala-a compatible with sala main2(AVDD) ldo(%d) operator=%d\n",__func__,
 							ldolist_20682[6].wl2864ldo, operator);
 		for(i=0;i<(sizeof(ldolist_20682)/sizeof(ldolist_20682[0]));i++) {

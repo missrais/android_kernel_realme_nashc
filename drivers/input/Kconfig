@@ -230,3 +230,5 @@ endmenu
 
 endmenu
 
+
+source "drivers/input/oplus_fp_drivers/Kconfig"

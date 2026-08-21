@@ -37,3 +37,6 @@ obj-$(CONFIG_OPPO_FINGERPRINT)  += oppo_fp_drivers/
 obj-$(CONFIG_OPPO_FINGERPRINT)  += oppo_secure_common/
 #endif /*VENDOR_EDIT*/
 obj-$(CONFIG_RMI4_CORE)		+= rmi4/
+
+# OPLUS Fingerprint
+obj-$(CONFIG_OPLUS_FINGERPRINT) += oplus_fp_drivers/
