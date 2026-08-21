@@ -590,3 +590,4 @@ config STRING_SELFTEST
 	bool "Test string functions"
 
 endmenu
+source "lib/vdso/Kconfig"
