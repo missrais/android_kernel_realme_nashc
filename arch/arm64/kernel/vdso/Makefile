@@ -58,7 +58,7 @@ $(obj-vdso-s): %.o: %.S FORCE
 
 # Actual build commands
 quiet_cmd_vdsoas = VDSOA   $@
-      cmd_vdsoas = $(CC) $(a_flags) -c -o $@ $
+	cmd_vdsoas = $(CC) $(a_flags) -c -o $@ $<
 
 # Install commands for the unstripped file
 quiet_cmd_vdso_install = INSTALL $@
