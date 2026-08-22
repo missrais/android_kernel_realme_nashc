@@ -11,6 +11,8 @@
 # GNU General Public License for more details.
 #
 ccflags-y += -Werror -I$(srctree)/drivers/devfreq
+ccflags-y += -I$(srctree)/drivers/misc/mediatek/dramc/mt6785/
+ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/qos/mt6785/
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/spm/$(MTK_PLATFORM)/
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/dramc/$(MTK_PLATFORM)/
 ccflags-y += -I$(srctree)/drivers/misc/mediatek/base/power/include/
