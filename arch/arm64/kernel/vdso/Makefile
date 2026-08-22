@@ -1,6 +1,3 @@
-# Disable LLVM integrated assembler for vdso - uses GNU as syntax
-LLVM_IAS := 0
-KBUILD_AFLAGS := $(filter-out -fno-integrated-as, $(KBUILD_AFLAGS)) -fno-integrated-as
 
 # SPDX-License-Identifier: GPL-2.0
 #
@@ -10,7 +7,7 @@ KBUILD_AFLAGS := $(filter-out -fno-integrated-as, $(KBUILD_AFLAGS)) -fno-integra
 # Heavily based on the vDSO Makefiles for other archs.
 #
 
-obj-vdso := gettimeofday.o note.o sigreturn.o
+obj-vdso := note.o sigreturn.o
 
 # Build rules
 targets := $(obj-vdso) vdso.so vdso.so.dbg
@@ -26,6 +23,8 @@ CFLAGS_REMOVE_vgettimeofday.o += $(CC_FLAGS_SCS)
 GCOV_PROFILE := n
 
 obj-y += vdso.o
+obj-vdso += gettimeofday.o
+CFLAGS_gettimeofday.o = -O2
 extra-y += vdso.lds
 CPPFLAGS_vdso.lds += -P -C -U$(ARCH)
 
@@ -57,7 +56,6 @@ $(obj-vdso): %.o: %.S FORCE
 
 # Actual build commands
 quiet_cmd_vdsoas = VDSOA   $@
-      cmd_vdsoas = $(CC) $(a_flags) -fno-integrated-as -c -o $@ $<
 
 # Install commands for the unstripped file
 quiet_cmd_vdso_install = INSTALL $@
