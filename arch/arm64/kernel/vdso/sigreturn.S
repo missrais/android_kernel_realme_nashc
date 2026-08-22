@@ -4,10 +4,6 @@
  * flag is not set.
  *
  * Copyright (C) 2012 ARM Limited
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 2 as
- * published by the Free Software Foundation.
  */
 #include <linux/linkage.h>
 #include <asm/unistd.h>
@@ -19,8 +15,8 @@ ENTRY(__kernel_rt_sigreturn)
 	.cfi_startproc
 	.cfi_signal_frame
 	.cfi_def_cfa	x29, 0
-	.cfi_offset	x29, 0 * 8
-	.cfi_offset	x30, 1 * 8
+	.cfi_offset	x29, 0
+	.cfi_offset	x30, 8
 	mov	x8, #__NR_rt_sigreturn
 	svc	#0
 	.cfi_endproc
