@@ -1,4 +1,3 @@
-
 # SPDX-License-Identifier: GPL-2.0
 #
 # Building a vDSO image for AArch64.
@@ -7,24 +6,27 @@
 # Heavily based on the vDSO Makefiles for other archs.
 #
 
-obj-vdso := note.o sigreturn.o
+obj-vdso-s := note.o sigreturn.o
+obj-vdso-c := gettimeofday.o
+obj-vdso := $(obj-vdso-s) $(obj-vdso-c)
 
 # Build rules
 targets := $(obj-vdso) vdso.so vdso.so.dbg
+obj-vdso-s := $(addprefix $(obj)/, $(obj-vdso-s))
+obj-vdso-c := $(addprefix $(obj)/, $(obj-vdso-c))
 obj-vdso := $(addprefix $(obj)/, $(obj-vdso))
 
-ldflags-y := -shared -nostdlib -soname=linux-vdso.so.1  --hash-style=sysv \
-		--build-id -n -T
-ccflags-y += $(DISABLE_LTO)
+ldflags-y := -shared -nostdlib -soname=linux-vdso.so.1 \
+		--hash-style=sysv --build-id -n -T
 
+ccflags-y += $(DISABLE_LTO)
 CFLAGS_REMOVE_vgettimeofday.o += $(CC_FLAGS_SCS)
+CFLAGS_gettimeofday.o = -O2 -fPIC
 
 # Disable gcov profiling for VDSO code
 GCOV_PROFILE := n
 
 obj-y += vdso.o
-obj-vdso += gettimeofday.o
-CFLAGS_gettimeofday.o = -O2
 extra-y += vdso.lds
 CPPFLAGS_vdso.lds += -P -C -U$(ARCH)
 
@@ -50,12 +52,13 @@ endef
 include/generated/vdso-offsets.h: $(obj)/vdso.so.dbg FORCE
 	$(call if_changed,vdsosym)
 
-# Assembly rules for the .S files
-$(obj-vdso): %.o: %.S FORCE
+# Assembly rules for the .S files only
+$(obj-vdso-s): %.o: %.S FORCE
 	$(call if_changed_dep,vdsoas)
 
 # Actual build commands
 quiet_cmd_vdsoas = VDSOA   $@
+      cmd_vdsoas = $(CC) $(a_flags) -c -o $@ $
 
 # Install commands for the unstripped file
 quiet_cmd_vdso_install = INSTALL $@
