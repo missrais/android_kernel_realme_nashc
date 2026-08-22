@@ -10,7 +10,7 @@
 #include <linux/sched.h>
 
 #ifdef CONFIG_MTK_PRINTK_UART_CONSOLE
-// removed conflicting declaration
+static inline bool mt_get_uartlog_status(void) { return true; }
 void mt_disable_uart(void);
 void mt_enable_uart(void);
 #else
