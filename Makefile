@@ -458,7 +458,7 @@ KBUILD_CFLAGS_MODULE  := -DMODULE
 KBUILD_LDFLAGS_MODULE := -T $(srctree)/scripts/module-common.lds
 LDFLAGS :=
 GCC_PLUGINS_CFLAGS :=
-CLANG_FLAGS :=
+CLANG_FLAGS := --target=aarch64-linux-gnu
 OPPO_F2FS_DEBUG := false
 
 #ifdef VENDOR_EDIT
