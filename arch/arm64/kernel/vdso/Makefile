@@ -1,3 +1,7 @@
+# Disable LLVM integrated assembler for vdso - uses GNU as syntax
+LLVM_IAS := 0
+KBUILD_AFLAGS := $(filter-out -fno-integrated-as, $(KBUILD_AFLAGS)) -fno-integrated-as
+
 # SPDX-License-Identifier: GPL-2.0
 #
 # Building a vDSO image for AArch64.
@@ -53,7 +57,7 @@ $(obj-vdso): %.o: %.S FORCE
 
 # Actual build commands
 quiet_cmd_vdsoas = VDSOA   $@
-      cmd_vdsoas = $(CC) $(a_flags) -c -o $@ $<
+      cmd_vdsoas = $(CC) $(a_flags) -fno-integrated-as -c -o $@ $<
 
 # Install commands for the unstripped file
 quiet_cmd_vdso_install = INSTALL $@
