@@ -57,49 +57,36 @@ static notrace __always_inline int do_coarse(const struct vdso_data *vd,
 	return 0;
 }
 
+
+#define __vdso_syscall2(nr, a0, a1)				\
+({								\
+	long __res;						\
+	__asm__ volatile(					\
+		"svc #0"					\
+		: "=r" (__res)					\
+		: "0" ((long)(a0)),				\
+		  "r" ((long)(a1)),				\
+		  "r" ((long)(nr))				\
+		: "memory");					\
+	__res;							\
+})
+
 static notrace __always_inline long
 clock_gettime_fallback(clockid_t clock, struct timespec *ts)
 {
-	register long ret    __asm__("x0");
-	register long _clk   __asm__("x0") = (long)clock;
-	register struct timespec *_ts __asm__("x1") = ts;
-	register long _nr    __asm__("x8") = __NR_clock_gettime;
-
-	__asm__ volatile("svc #0"
-		: "=r" (ret)
-		: "0" (_clk), "r" (_ts), "r" (_nr)
-		: "memory");
-	return ret;
+	return __vdso_syscall2(__NR_clock_gettime, clock, ts);
 }
 
 static notrace __always_inline long
 gettimeofday_fallback(struct timeval *tv, struct timezone *tz)
 {
-	register long ret    __asm__("x0");
-	register struct timeval *_tv __asm__("x0") = tv;
-	register struct timezone *_tz __asm__("x1") = tz;
-	register long _nr    __asm__("x8") = __NR_gettimeofday;
-
-	__asm__ volatile("svc #0"
-		: "=r" (ret)
-		: "0" (_tv), "r" (_tz), "r" (_nr)
-		: "memory");
-	return ret;
+	return __vdso_syscall2(__NR_gettimeofday, tv, tz);
 }
 
 static notrace __always_inline long
 clock_getres_fallback(clockid_t clock_id, struct timespec *ts)
 {
-	register long ret     __asm__("x0");
-	register long _clkid  __asm__("x0") = (long)clock_id;
-	register struct timespec *_ts __asm__("x1") = ts;
-	register long _nr     __asm__("x8") = __NR_clock_getres;
-
-	__asm__ volatile("svc #0"
-		: "=r" (ret)
-		: "0" (_clkid), "r" (_ts), "r" (_nr)
-		: "memory");
-	return ret;
+	return __vdso_syscall2(__NR_clock_getres, clock_id, ts);
 }
 
 notrace int __kernel_clock_gettime(clockid_t clock, struct timespec *ts)
