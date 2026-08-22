@@ -20,6 +20,8 @@ ldflags-y := -shared -nostdlib -soname=linux-vdso.so.1 \
 		--hash-style=sysv --build-id -n -T
 
 ccflags-y += $(DISABLE_LTO)
+ccflags-y += --target=aarch64-linux-gnu
+KBUILD_AFLAGS_vdso := --target=aarch64-linux-gnu
 CFLAGS_REMOVE_vgettimeofday.o += $(CC_FLAGS_SCS)
 CFLAGS_gettimeofday.o = -O2 -fPIC
 
@@ -58,7 +60,7 @@ $(obj-vdso-s): %.o: %.S FORCE
 
 # Actual build commands
 quiet_cmd_vdsoas = VDSOA   $@
-	cmd_vdsoas = $(CC) $(a_flags) -c -o $@ $<
+	cmd_vdsoas = $(CC) $(a_flags) --target=aarch64-linux-gnu -c -o $@ $<
 
 # Install commands for the unstripped file
 quiet_cmd_vdso_install = INSTALL $@
