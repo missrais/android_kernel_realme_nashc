@@ -6,9 +6,8 @@
 
 #ifndef _MT_PMIC_UPMU_HW_MT6359_H_
 #define _MT_PMIC_UPMU_HW_MT6359_H_
-
 #include "../../../mt6781/include/mach/upmu_hw.h"
-#else
+#if 0
 #define PMU_FLAG_TABLE_ENTRY struct pmu_flag_table_entry_t
 #define PMU_FLAGS_LIST_ENUM enum PMU_FLAGS_LIST
 
