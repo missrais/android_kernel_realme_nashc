@@ -1,5 +1,5 @@
 ifeq (y, $(filter y, $(CONFIG_MACH_MT6893)))
-MTK_PLATFORM := mt6885
+MTK_PLATFORM := mt6785
 endif
 
 obj-$(CONFIG_VIDEO_MEDIATEK_VCODEC) += mtk-vcodec-dec.o \
